@@ -1,27 +1,30 @@
 import React, { useState } from "react";
-import { login } from "../services/auth";
+import { loginUser } from "../services/auth";
 
 const Login = () => {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-    const handleLogin = async (e) => {
-        e.preventDefault();
-        try {
-            await login(email, password);
-            // Redirect or update UI
-        } catch (error) {
-            console.error("Login failed", error);
-        }
-    };
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    try {
+      await loginUser(email, password);
+      // Redirect or perform other actions
+    } catch (error) {
+      alert("Login failed. Please try again.");
+    }
+  };
 
-    return (
-        <form onSubmit={handleLogin}>
-            <input type="email" onChange={(e) => setEmail(e.target.value)} placeholder="Email" required />
-            <input type="password" onChange={(e) => setPassword(e.target.value)} placeholder="Password" required />
-            <button type="submit">Login</button>
-        </form>
-    );
+  return (
+    <div>
+      <h1>Login</h1>
+      <form onSubmit={handleLogin}>
+        <input type="email" placeholder="Email" onChange={(e) => setEmail(e.target.value)} required />
+        <input type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} required />
+        <button type="submit">Login</button>
+      </form>
+    </div>
+  );
 };
 
 export default Login;

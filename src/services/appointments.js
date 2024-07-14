@@ -1,15 +1,18 @@
-// Function to generate token
-function generateToken() {
-    return Math.floor(1000 + Math.random() * 9000); // Simple token generation
-}
+import { getFirestore, collection, addDoc, getDocs } from "firebase/firestore";
 
-// Function to save patient data
-async function savePatientData(patientData) {
-    const db = firebase.firestore();
-    try {
-        await db.collection('patients').add(patientData);
-        console.log('Patient data saved:', patientData);
-    } catch (error) {
-        console.error('Error saving patient data:', error);
-    }
-}
+const db = getFirestore();
+
+export const createAppointment = async (appointmentData) => {
+  try {
+    const docRef = await addDoc(collection(db, "appointments"), appointmentData);
+    return docRef.id;
+  } catch (error) {
+    console.error("Error adding appointment:", error);
+    throw error;
+  }
+};
+
+export const getAppointments = async () => {
+  const querySnapshot = await getDocs(collection(db, "appointments"));
+  return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+};
